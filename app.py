@@ -22,10 +22,7 @@ def download_model():
 # Descarga el modelo si no existe
 download_model()
 
-# Carga del modelo
-model = load_model(MODEL_PATH)
-
-# App Flask
+# Inicia la app
 app = Flask(__name__)
 
 @app.route('/', methods=['GET', 'POST'])
@@ -36,12 +33,15 @@ def index():
             img_path = os.path.join('static', img_file.filename)
             img_file.save(img_path)
 
-            # Cargar y preprocesar la imagen
+            # Cargar el modelo en el momento
+            model = load_model(MODEL_PATH)
+
+            # Procesar la imagen
             img = image.load_img(img_path, target_size=(128, 128))
             img_array = image.img_to_array(img) / 255.0
             img_array = np.expand_dims(img_array, axis=0)
 
-            # Predicción
+            # Realizar la predicción
             pred = model.predict(img_array)[0][0]
             label = 'Perro' if pred >= 0.5 else 'Gato'
 
@@ -49,5 +49,4 @@ def index():
 
     return render_template('index.html')
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# NOTA: No incluir app.run(), Render lo maneja con gunicorn
