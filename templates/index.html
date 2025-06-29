@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <meta charset="UTF-8">
+    <title>Clasificador de Perros y Gatos</title>
+</head>
+<body>
+<div class="container">
+    <h1>Clasificador de Perros y Gatos</h1>
+    <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="file" required><br>
+        <button type="submit">Clasificar</button>
+    </form>
+
+    {% if label %}
+        <div class="result">Resultado: {{ label }}</div>
+        <img src="{{ img_path }}">
+    {% endif %}
+</div>
+</body>
+</html>
